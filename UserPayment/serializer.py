@@ -57,4 +57,28 @@ customer = Customer(
             zip_code = '')
 
 serializer = CustomerSerializer(customer)
-print(serializer.data)
+serializer.data # serialized data
+
+# Serialization Test
+# OrderSerialization
+class Order:
+    def __init__(self, id, currency, amount, description, 
+                 callback_url, notification_id, billing_address):
+        self.id = id
+        self.currency = currency
+        self.amount = amount
+        self.description = description
+        self.callback_url = callback_url
+        self.notification_id = notification_id
+        self.billing_address = billing_address
+
+order = Order(
+        id = 'AA1122-3344ZZ',
+        currency = 'KES',
+        amount = 100.00,
+        description = 'Payment description goes here',
+        callback_url = 'https://www.myapplication.com/response-page',
+        notification_id = 'sdffssj;fas-adf;sdfjsfd',
+        billing_address = customer)
+serializer = OrderSerializer(order)
+serializer.data # serialized data
