@@ -34,7 +34,8 @@ TOKEN = None
 TOKEN_EXPIRY = None
 NOTIFICATION_ID = None
 
-# Paypal server url
+# Constants
+# Used in multiple functions
 PAYPAL_SERVER_URL = 'https://cybqa.pesapal.com'
 
 def get_access_token(consumer_key, consumer_secret):
