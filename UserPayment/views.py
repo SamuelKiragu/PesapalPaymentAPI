@@ -1,19 +1,27 @@
+from django.contrib.auth.models import User
 from rest_framework import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
-class SubmitOrder(APIView):
+class CreateUser(APIView):
     """
-    View to submit order
-    Makes API call to Pesapal
-    Returns a JSON object containing the iframe URL
+    View to create user
+    User is created using
+    1. username
+    2. password
+    3. email
+    4. first_name
+    5. last_name
     """
     
     def post(self, request, format=None):
-        # TODO: Response skeleton
-        # TODO: Extract Data from request
-        # TODO: Add additional data
-        # TODO: Make API call to pesapal
-        # TODO: Format response
-        # TODO: return response
+        """
+        Create new user
+        """
 
+    def get(self, request, format=None):
+        """
+        Return a list of all users.
+        """
+        usernames = [user.username for user in User.objects.all()]
+        return Response(usernames)
