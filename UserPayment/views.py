@@ -1,9 +1,12 @@
 from django.contrib.auth.models import User
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework import authentication, permissions
+from rest_framework.permissions import IsAdminUser
+from rest_framework.views import APIView
 from UserPayment.serializers import *
 
 class UserList(generics.ListCreateAPIView):
@@ -24,3 +27,17 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email
         })
 
+class SubmitOrder(APIView):
+    authentication_classes = [TokenAuthentication]
+
+    def get(self, request, format=None):
+        """
+        Pesapal API call
+        """
+        # Throw error if no token specified
+        if str(request.user) == "AnonymousUser":
+            content = {'Invalid Token'}
+            return Response(content, status.HTTP_403_FORBIDDEN)
+
+
+        return Response(content)

@@ -1,6 +1,8 @@
 from django.urls import path
-from  UserPayment import views
+from  UserPayment.views import *
 
 urlpatterns = [
-        path('users/', views.UserList.as_view())
+        path('api-token-auth/', CustomAuthToken.as_view()),
+        path('submit_order/', SubmitOrder.as_view()),
+        path('users/', UserList.as_view())
 ]
