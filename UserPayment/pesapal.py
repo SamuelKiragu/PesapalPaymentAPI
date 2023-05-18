@@ -1,49 +1,53 @@
 from datetime import datetime, timezone
+from dotenv import load_dotenv
+import json
+import os
 import pytz
 import requests
-import json
+
+load_dotenv() # take environment variables from .env
 
 # Important variables
 # for testing purposes ONLY
 # production key and secret should be separated from code
 
-# Testing get_access_token()
-CONSUMER_KEY = 'qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW'
-CONSUMER_SECRET = 'osGQ364R49cXKeOYSpaOnT++rHs='
+CONSUMER_KEY = os.getenv('PESAPAL_CONSUMER_KEY')
+CONSUMER_SECRET = os.getenv('PESAPAL_CONSUMER_SECRET')
+PESAPAL_SERVER_URL = os.getenv('PESAPAL_SERVER_URL')
+
 # Testing register_IPN_URL()
-IPN_URL = 'https://www.myapplication.com/ipn'
+# IPN_URL = 'https://www.myapplication.com/ipn'
 # Testing submit_order_request()
-CALLBACK_URL = 'https://www.myapplication.com/response-page'
-BILLING_ADDRESS = {
-        'email_address': 'john.doe@example.com',
-        'phone_number': None,
-        'country_code': '',
-        'first_name': 'John',
-        'middle_name': '',
-        'last_name': 'Doe',
-        'line_1': '',
-        'line_2': '',
-        'city': '',
-        'state': '',
-        'postal_code': None,
-        'zip_code': None
-}
+# CALLBACK_URL = 'https://www.myapplication.com/response-page'
+# BILLING_ADDRESS = {
+#        'email_address': 'john.doe@example.com',
+#        'phone_number': None,
+#        'country_code': '',
+#        'first_name': 'John',
+#        'middle_name': '',
+#        'last_name': 'Doe',
+#        'line_1': '',
+#        'line_2': '',
+#        'city': '',
+#        'state': '',
+#        'postal_code': None,
+#        'zip_code': None
+# }
 # Used in multiple tests.
 # Will be assigned values after running some functions
-TOKEN = None
-TOKEN_EXPIRY = None
-NOTIFICATION_ID = None
+# TOKEN = None
+# TOKEN_EXPIRY = None
+# NOTIFICATION_ID = None
 
 # Constants
 # Used in multiple functions
-PAYPAL_SERVER_URL = 'https://cybqa.pesapal.com'
 
-def get_access_token(consumer_key, consumer_secret):
-    url = f'{PAYPAL_SERVER_URL}/pesapalv3/api/Auth/RequestToken'
+def get_access_token():
+    url = f'{PESAPAL_SERVER_URL}/api/Auth/RequestToken'
 
     payload = json.dumps({
-        'consumer_key': consumer_key,
-        'consumer_secret': consumer_secret
+        'consumer_key': CONSUMER_KEY,
+        'consumer_secret': CONSUMER_SECRET
     })
     headers = {
         'Content-Type': 'application/json',
@@ -56,25 +60,16 @@ def get_access_token(consumer_key, consumer_secret):
     response_text = json.loads(response.text)
     while(response_text['status'] != '200'):
         response = requests.request('POST', url, headers=headers, data=payload)
-        response_text = json.loads(response.text)
-    
-    # Return ExpiryDate and Token
-    # Status used for testing success
-    return {
-            'ExpiryDate': datetime.strptime(response_text['expiryDate'][:-2],
-                                        '%Y-%m-%dT%H:%M:%S.%f'),
-            'Status': 'Success',
-            'Token': response_text['token'],
-            }
+    return json.loads(response.text)
 
 # Function Test
 # Function Name: get_access_token
-# Expected )Result: 'Success'
-assert get_access_token(CONSUMER_KEY, CONSUMER_SECRET)['Status'] == 'Success'
+# Expected Result: 'Success'
+# assert get_access_token(CONSUMER_KEY, CONSUMER_SECRET)['status'] == '200'
 
-def is_token_expired(token_expiry):
+def is_token_expired(token):
     now_datetime = datetime.now(timezone.utc)
-    delta = now_datetime - pytz.utc.localize(token_expiry)
+    delta = now_datetime - pytz.utc.localize(token["expiryDate"])
     return True if delta.total_seconds() > 500 else False
 
 
@@ -82,15 +77,15 @@ def is_token_expired(token_expiry):
 # Function Test
 # Function Name: is_token_expired
 # Expected Result: 'False', token has just been fetched
-res = get_access_token(CONSUMER_KEY, CONSUMER_SECRET)
-TOKEN =  res['Token']
-TOKEN_EXPIRY = res['ExpiryDate']
-assert is_token_expired(TOKEN_EXPIRY) == False
+# res = get_access_token(CONSUMER_KEY, CONSUMER_SECRET)
+# TOKEN =  res['Token']
+# TOKEN_EXPIRY = res['ExpiryDate']
+# assert is_token_expired(TOKEN_EXPIRY) == False
 
 
 
 def register_IPN_URL(url, token):
-    url = f'{PAYPAL_SERVER_URL}/pesapalv3/api/URLSetup/RegisterIPN'
+    url = f'{PESAPAL_SERVER_URL}/api/URLSetup/RegisterIPN'
 
     payload = json.dumps({
         'url': url,
@@ -109,16 +104,17 @@ def register_IPN_URL(url, token):
 # Function Test
 # Function Name: register_IPN_URL
 # Expected Result: dictionary d['status'] == '200'
-assert register_IPN_URL(IPN_URL, TOKEN)['status'] == '200'
-res = register_IPN_URL(IPN_URL, TOKEN)
-NOTIFICATION_ID = res['ipn_id']
+# assert register_IPN_URL(IPN_URL, TOKEN)['status'] == '200'
+# res = register_IPN_URL(IPN_URL, TOKEN)
+# NOTIFICATION_ID = res['ipn_id']
 
 
 
 def submit_order_request(id, currency, amount, description,
-                         callback_url, notification_id,
+                         callback_url, ipn_url,
                          billing_address, token):
-    url = f'{PAYPAL_SERVER_URL}/pesapalv3/api/Transactions/SubmitOrderRequest'
+    url = f'{PESAPAL_SERVER_URL}/api/Transactions/SubmitOrderRequest'
+    notification_id = register_IPN_URL(ipn_url, token)['ipn_id']
 
     payload = json.dumps({
         'id': id,
@@ -141,13 +137,13 @@ def submit_order_request(id, currency, amount, description,
 # Function Test
 # Function Name: submit_order_request
 # Expected Results: dictionary d where d['status'] == '200'
-assert submit_order_request(
-        id = '1233235',
-        currency = 'KES', 
-        amount = 100,
-        description = 'Payment description goes here',
-        callback_url = CALLBACK_URL,
-        notification_id = NOTIFICATION_ID,
-        billing_address = BILLING_ADDRESS,
-        token = TOKEN
-        )['status'] == '200'
+# assert submit_order_request(
+#        id = '1233235',
+#        currency = 'KES', 
+#        amount = 100,
+#        description = 'Payment description goes here',
+#        callback_url = CALLBACK_URL,
+#        notification_id = NOTIFICATION_ID,
+#        billing_address = BILLING_ADDRESS,
+#        token = TOKEN
+#        )['status'] == '200'
