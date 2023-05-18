@@ -1,27 +1,26 @@
 from django.contrib.auth.models import User
-from rest_framework import APIView
+from rest_framework import generics
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
+from UserPayment.serializers import *
 
-class CreateUser(APIView):
-    """
-    View to create user
-    User is created using
-    1. username
-    2. password
-    3. email
-    4. first_name
-    5. last_name
-    """
-    
-    def post(self, request, format=None):
-        """
-        Create new user
-        """
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    def get(self, request, format=None):
-        """
-        Return a list of all users.
-        """
-        usernames = [user.username for user in User.objects.all()]
-        return Response(usernames)
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email
+        })
+
