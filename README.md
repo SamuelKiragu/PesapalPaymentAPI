@@ -22,31 +22,33 @@ pip --version
 
 1. Clone repository
 
-```
-Give the example
+```bash
+git clone https://github.com/SamuelKiragu/PesapalPaymentAPI.git
 ```
 
-2. Create virtual environment
+2. Create virtual environment and activate
 
-```
-Give the example
+```bash
+python -m venv /env
+source env/bin/activate
 ```
 
 3. Install required python packages
 
-```
-Give the example
+```bash
+pip install django django-rest python-dotenv requests pytz
 ```
 
 4. Make migrations and migrate
-```
-Give the example
+```bash
+pip makemigrations
+pip migrate
 ```
 
 5. Run server
 
 ```
-Give the example
+python manage.py runserver
 ```
 
 ## Usage
