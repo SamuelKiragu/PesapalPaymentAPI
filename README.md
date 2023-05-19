@@ -52,7 +52,9 @@ python manage.py runserver
 ```
 
 ## Usage
-
+1. Create a customer account. Details needed are username, first_name, last_name, email_address, and password
+2. Get Access Token using username and password
+3. Use Access Token to submit an order
 
 ## API Endpoints
 
