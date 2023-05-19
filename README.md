@@ -69,4 +69,4 @@ Give the example
 None
 
 ## Acknowledgments
-* [PurpleBooth][https://github.com/PurpleBooth] - Provided README template
+* [PurpleBooth](https://github.com/PurpleBooth) - Provided README template
