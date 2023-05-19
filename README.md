@@ -1,5 +1,5 @@
 # Pesapal Payment API
-
+This is an implementation of pesapal APIs. It allows for the creation of a user account, getting an access token using the user account, and finally making payment via pesapal.
 
 ## Getting Started
 
