@@ -87,22 +87,9 @@ curl --location 'http://127.0.0.1:8000/api-token-auth/' \
 ```
 4. Use Access Token to submit an order
 ```bash
-curl --location 'https://cybqa.pesapal.com/pesapalv3/api/Transactions/SubmitOrderRequests'\
---header 'Content-Type: application/json'\
---header 'Authorization: Bearer'\
---data-raw '{
-"id": "TEST13434",
-"currency": "KES",
-"amount": 100.00,
-"description": "description"",
-"callback_url: "here"
-"notification_id": "sdfdasdf"
-"billing_address": {
-"email_address": "john.doe@example.com",
-"first_name": "John"
-"last_name": "Doe"
-}
-}'
+curl --location 'http://127.0.0.1:8000/submit_order/?amount=1000' \ 
+--header 'Accept: application/json' \ 
+--header 'Authorization: Token {token_from_step_2}'
 ```
 
 ## API Endpoints
