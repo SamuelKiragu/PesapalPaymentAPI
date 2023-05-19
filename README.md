@@ -53,8 +53,47 @@ python manage.py runserver
 
 ## Usage
 1. Create a customer account. Details needed are username, first_name, last_name, email_address, and password
-2. Get Access Token using username and password
-3. Use Access Token to submit an order
+```bash
+curl --location 'http://127.0.0.1:8000/users/' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--data '{
+"username": "JoeDoe",
+"first_name": "Joe",
+"last_name": "Doe",
+"email": "joedoe@example.com",
+"password": "1234"
+}'
+```
+3. Get Access Token using username and password
+```bash
+curl --location 'http://127.0.0.1:8000/api-token-auth/' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--data '{
+"username": "JoeDoe",
+"password": "1234"
+}'
+```
+4. Use Access Token to submit an order
+```bash
+curl --location 'https://cybqa.pesapal.com/pesapalv3/api/Transactions/SubmitOrderRequests'\
+--header 'Content-Type: application/json'\
+--header 'Authorization: Bearer'\
+--data-raw '{
+"id": "TEST13434",
+"currency": "KES",
+"amount": 100.00,
+"description": "description"",
+"callback_url: "here"
+"notification_id": "sdfdasdf"
+"billing_address": {
+"email_address": "john.doe@example.com",
+"first_name": "John"
+"last_name": "Doe"
+}
+}'
+```
 
 ## API Endpoints
 
