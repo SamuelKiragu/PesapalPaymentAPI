@@ -29,7 +29,7 @@ git clone https://github.com/SamuelKiragu/PesapalPaymentAPI.git
 2. Create virtual environment and activate
 
 ```bash
-python -m venv /env
+python -m venv env
 source env/bin/activate
 ```
 
