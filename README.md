@@ -38,14 +38,24 @@ source env/bin/activate
 ```bash
 pip install django django-rest python-dotenv requests pytz
 ```
+4. Create .env file in the root of the project directory and add the following settings
 
-4. Make migrations and migrate
+```bash
+DEBUG= # True or False
+# Pesapal settings vary depending on whether you are using for testing or production purposes
+PESAPAL_CONSUMER_KEY= # URL to acess pesapal consumer key
+PESAPAL_CONSUMER_SECRET= # URL to access pesapal consumer secret
+PESAPAL_SERVER_URL= # URL to access pesapal API
+SECRET_KEY= # Secret key to be used by django
+```
+
+5. Make migrations and migrate
 ```bash
 pip makemigrations
 pip migrate
 ```
 
-5. Run server
+6. Run server
 
 ```
 python manage.py runserver
