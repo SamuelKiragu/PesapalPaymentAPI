@@ -62,10 +62,11 @@ Give the example
 
 ## Authors
 
-* **Samuel Kiragu** - [PurpleBooth](https://github.com/SamuelKiragu)
+* **Samuel Kiragu** - [SamuelKiragu](https://github.com/SamuelKiragu)
 
 ## License
 
 None
 
 ## Acknowledgments
+* [PurpleBooth][https://github.com/PurpleBooth] - Provided README template
