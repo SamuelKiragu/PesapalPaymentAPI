@@ -75,7 +75,7 @@ curl --location 'http://127.0.0.1:8000/users/' \
 "password": "1234"
 }'
 ```
-3. Get Access Token using username and password
+2. Get Access Token using username and password
 ```bash
 curl --location 'http://127.0.0.1:8000/api-token-auth/' \
 --header 'Accept: application/json' \
@@ -85,7 +85,7 @@ curl --location 'http://127.0.0.1:8000/api-token-auth/' \
 "password": "1234"
 }'
 ```
-4. Use Access Token to submit an order
+3. Use Access Token to submit an order
 ```bash
 curl --location 'http://127.0.0.1:8000/submit_order/?amount=1000' \ 
 --header 'Accept: application/json' \ 
