@@ -8,12 +8,14 @@
 1. Python
 2. Pip
 
-```
+```bash
 python --version
-Python 3.10.9
+# Printed to stdout
+# Python 3.10.9
 
 pip --version
-Pip 23.1.2
+# Printed to stdout
+# Pip 23.1.2
 ```
 
 ### Installing
