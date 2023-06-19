@@ -35,7 +35,9 @@ git clone https://github.com/SamuelKiragu/PesapalPaymentAPI.git
 # Create a virtual environment for the PesapalPaymentAPI
 # For isolating needed software libraries 
 # and avoid possible dependecy breakages 
+
 python -m venv env
+
 # Activate the created virtual environment
 source env/bin/activate
 ```
@@ -44,13 +46,16 @@ source env/bin/activate
 
 ```bash
 # Use python package manager to install the needed libraries
+
 pip install django django-rest python-dotenv requests pytz
 ```
 4. Create .env file in the root of the project directory and add the following settings. The hidden file contains needed configuration for PesapalPaymentAPI that will not be version controlled.
 
 ```bash
 DEBUG= # True or False
+
 # Pesapal settings vary depending on whether you are using for testing or production purposes
+
 PESAPAL_CONSUMER_KEY= # URL to acess pesapal consumer key
 PESAPAL_CONSUMER_SECRET= # URL to access pesapal consumer secret
 PESAPAL_SERVER_URL= # URL to access pesapal API
