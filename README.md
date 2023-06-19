@@ -23,6 +23,8 @@ pip --version
 1. Clone repository
 
 ```bash
+# git clone is a command line utility provided by the git command. It allows you to clone the PesapalPaymentAPI repository
+
 git clone https://github.com/SamuelKiragu/PesapalPaymentAPI.git
 ```
 
