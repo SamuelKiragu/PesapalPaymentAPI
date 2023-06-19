@@ -92,13 +92,30 @@ curl --location 'http://127.0.0.1:8000/users/' \
 ```
 2. Get Access Token using username and password
 ```bash
-curl --location 'http://127.0.0.1:8000/api-token-auth/' \
+curl --location 'http://127.0.0.1:8000/api/token/' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --data '{
 "username": "JoeDoe",
 "password": "1234"
 }'
+...
+{
+  "access": an access token string,
+  "refresh": a refresh token string
+}
+
+```
+The access token has a lifespan of 5 minutes. After 5 minutes, use the refresh token to obtain another access token
+```
+curl \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"refresh": refresh-token-string}' \
+  http://localhost:8000/api/token/refresh/
+
+...
+{"access": new-access-token}
 ```
 3. Use Access Token to submit an order
 ```bash
