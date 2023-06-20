@@ -47,7 +47,7 @@ source env/bin/activate
 ```bash
 # Use python package manager to install the needed libraries
 
-pip install django django-rest python-dotenv requests pytz
+pip install django django-rest python-dotenv requests pytz djangorestframework-simplejwt
 ```
 4. Create .env file in the root of the project directory and add the following settings. The hidden file contains needed configuration for PesapalPaymentAPI that will not be version controlled.
 
