@@ -1,11 +1,9 @@
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.views import APIView
 from UserPayment import pesapal
 from UserPayment.serializers import *
@@ -16,7 +14,8 @@ class UserList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
 
 class SubmitOrder(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     PESAPAL_TOKEN = None
 
     def get(self, request, format=None):
@@ -24,9 +23,9 @@ class SubmitOrder(APIView):
         Pesapal API call
         """
         # Throw error if no token specified
-        if str(request.user) == 'AnonymousUser':
-            content = {'Invalid Token'}
-            return Response(content, status.HTTP_403_FORBIDDEN)
+        # if str(request.user) == 'AnonymousUser':
+        #     content = {'Invalid Token'}
+        #     return Response(content, status.HTTP_403_FORBIDDEN)
         # Get pesapalToken
         if not self.PESAPAL_TOKEN or pesapal.is_token_expired(PESAPAL_TOKEN):
             self.PESAPAL_TOKEN = pesapal.get_access_token()
