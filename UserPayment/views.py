@@ -20,6 +20,20 @@ class SubmitOrder(APIView):
 
     def post(self, request, format=None):
         """
+        Validate required data 
+        """
+        if not (request.data.get("amount") and
+                request.data.get("email_address")):
+            return Response("Error")
+        
+        # Create billing address object
+        billing_address = pesapal.BillingAddress(
+                            email_address = request.data.get("email_address"),
+                            first_name = request.data.get("first_name"),
+                            last_name = request.data.get("last_name")
+                        )
+
+        """
         Pesapal API call
         """
         # Get pesapalToken
@@ -33,7 +47,7 @@ class SubmitOrder(APIView):
             description='Payment',
             callback_url='http://127.0.0.0:8000/',
             ipn_url='http://127.0.0.0:8000/',
-            billing_address= UserSerializer(request.user).data,
+            billing_address= BillingAddressSerializer(billing_address).data,
             token=self.PESAPAL_TOKEN["token"]
         )
         return Response(results)

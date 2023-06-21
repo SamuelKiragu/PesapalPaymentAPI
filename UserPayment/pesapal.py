@@ -15,6 +15,15 @@ CONSUMER_KEY = os.getenv('PESAPAL_CONSUMER_KEY')
 CONSUMER_SECRET = os.getenv('PESAPAL_CONSUMER_SECRET')
 PESAPAL_SERVER_URL = os.getenv('PESAPAL_SERVER_URL')
 
+# Customer Details class
+# Organizes optional and mandatory billing data
+class BillingAddress:
+    def __init__(
+            self, email_address=None, first_name=None, last_name=None,
+            ):
+        self.email_address = email_address
+        self.first_name = first_name
+        self.last_name = last_name
 # Testing register_IPN_URL()
 # IPN_URL = 'https://www.myapplication.com/ipn'
 # Testing submit_order_request()
