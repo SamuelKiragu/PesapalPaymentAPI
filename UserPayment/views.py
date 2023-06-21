@@ -22,10 +22,6 @@ class SubmitOrder(APIView):
         """
         Pesapal API call
         """
-        # Throw error if no token specified
-        # if str(request.user) == 'AnonymousUser':
-        #     content = {'Invalid Token'}
-        #     return Response(content, status.HTTP_403_FORBIDDEN)
         # Get pesapalToken
         if not self.PESAPAL_TOKEN or pesapal.is_token_expired(PESAPAL_TOKEN):
             self.PESAPAL_TOKEN = pesapal.get_access_token()
