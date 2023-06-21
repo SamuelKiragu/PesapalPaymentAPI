@@ -18,7 +18,7 @@ class SubmitOrder(APIView):
     permission_classes = [IsAuthenticated]
     PESAPAL_TOKEN = None
 
-    def get(self, request, format=None):
+    def post(self, request, format=None):
         """
         Pesapal API call
         """
@@ -29,7 +29,7 @@ class SubmitOrder(APIView):
         results = pesapal.submit_order_request(
             id=random.randint(10000,99999),
             currency='KES',
-            amount=request.query_params.get('amount'),
+            amount=request.data['amount'],
             description='Payment',
             callback_url='http://127.0.0.0:8000/',
             ipn_url='http://127.0.0.0:8000/',
