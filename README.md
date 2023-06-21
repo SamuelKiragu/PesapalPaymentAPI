@@ -119,9 +119,13 @@ curl \
 ```
 3. Use Access Token to submit an order
 ```bash
-curl --location 'http://127.0.0.1:8000/submit_order/?amount=1000' \ 
---header 'Accept: application/json' \ 
---header 'Authorization: Token {token_from_step_2}'
+curl \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg3MzQwMzExLCJpYXQiOjE2ODczNDAwMTEsImp0aSI6IjFlODA0ZjY4ZThmMzQ1Yjg4MzJhMWFlMmI1YWNmNmNlIiwidXNlcl9pZCI6MX0.x6my_vRgaEhJQdFQrFOJqC4L-COuySFcYPs6UiJx_1I' \
+'http://127.0.0.1:8000/submit_order/' \
+-d '{"amount": 1000, "email_address": "joedoe@example.com"}'
+
+
 ```
 
 ## API Endpoints
